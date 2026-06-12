@@ -1,0 +1,36 @@
+# Node.js build and dependencies
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# TypeScript build output
+dist/
+build/
+*.tsbuildinfo
+
+# Logs
+logs
+*.log
+*.log.*
+coverage/
+
+# Environment variables
+.env
+.env.*
+!.env.example   # keep a template/example file
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Misc
+*.tgz
