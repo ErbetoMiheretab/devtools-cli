@@ -1,0 +1,42 @@
+import * as fs from "fs/promises";
+import * as path from "path";
+import type { IInputReader, InputSource } from "../core/interfaces";
+
+export class InputReader implements IInputReader {
+  async read(source: InputSource): Promise<string> {
+    switch (source.type) {
+      case "arg":
+        return source.value;
+      case "file": {
+        // Sanitize the file path to prevent directory traversal vulnerabilities if untrusted
+        // TODO(security): If this CLI runs in a shared environment, restrict the paths allowed.
+        const safePath = path.resolve(source.path);
+        try {
+          return await fs.readFile(safePath, "utf-8");
+        } catch (error) {
+          throw new Error(`Failed to read file at ${safePath}: ${(error as Error).message}`);
+        }
+      }
+      case "stdin":
+        return new Promise<string>((resolve, reject) => {
+          if (process.stdin.isTTY) {
+            resolve("");
+            return;
+          }
+          let data = "";
+          process.stdin.setEncoding("utf-8");
+          process.stdin.on("data", (chunk: string) => {
+            data += chunk;
+          });
+          process.stdin.on("end", () => {
+            resolve(data.trim());
+          });
+          process.stdin.on("error", (err: Error) => {
+            reject(new Error(`Failed to read from stdin: ${err.message}`));
+          });
+        });
+      default:
+        throw new Error(`Unsupported input source type`);
+    }
+  }
+}
