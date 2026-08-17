@@ -1,4 +1,4 @@
-import type { IOutputFormatter, CommandResult } from "../core/interfaces";
+import type { IOutputFormatter, CommandResult } from "../core/interfaces.ts";
 
 class JsonFormatter implements IOutputFormatter {
   format(result: CommandResult): string {
@@ -25,13 +25,14 @@ class BinaryFormatter implements IOutputFormatter {
 }
 
 export function getFormatter(
-  format: CommandResult["format"],
+  format: "text" | "json" | "binary",
 ): IOutputFormatter {
   switch (format) {
     case "json":
       return new JsonFormatter();
     case "binary":
       return new BinaryFormatter();
+    case "text":
     default:
       return new TextFormatter();
   }

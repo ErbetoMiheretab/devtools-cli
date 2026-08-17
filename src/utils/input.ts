@@ -1,6 +1,6 @@
 import * as fs from "fs/promises";
 import * as path from "path";
-import type { IInputReader, InputSource } from "../core/interfaces";
+import type { IInputReader, InputSource } from "../core/interfaces.ts";
 
 /**
  * Resolves a user-provided path and verifies it stays within an allowed directory.

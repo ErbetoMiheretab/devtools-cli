@@ -1,9 +1,9 @@
 import { Command } from "commander";
-import { CommandFactory } from "./core/CommandFactory";
-import { ToolRegistry } from "./core/ToolRegistry";
-import { InputReader } from "./utils/input";
-import { getFormatter } from "./utils/output";
-import { handleError, CLIError } from "./utils/error";
+import { CommandFactory } from "./core/CommandFactory.ts";
+import { ToolRegistry } from "./core/ToolRegistry.ts";
+import { InputReader } from "./utils/input.ts";
+import { getFormatter } from "./utils/output.ts";
+import { handleError, CLIError } from "./utils/error.ts";
 
 async function main() {
   const program = new Command();
@@ -46,8 +46,9 @@ async function main() {
           stdin,
         });
 
-        // Use custom formatter based on json option or default formatter
-        const formatter = getFormatter(options.json);
+        // Use custom formatter based on json option or command result format
+        const formatType = options.json ? "json" : result.format;
+        const formatter = getFormatter(formatType);
         console.log(formatter.format(result));
       } catch (error) {
         handleError(error);

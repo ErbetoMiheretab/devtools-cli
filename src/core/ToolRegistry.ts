@@ -1,4 +1,4 @@
-import type { ICommand } from "./interfaces";
+import type { ICommand } from "./interfaces.ts";
 
 export class ToolRegistry {
   private static instance: ToolRegistry;

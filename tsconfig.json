@@ -9,6 +9,7 @@
         "declaration": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
+        "allowImportingTsExtensions": true,
         "ignoreDeprecations": "6.0",
         "types": [
             "node"

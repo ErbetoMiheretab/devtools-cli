@@ -1,4 +1,4 @@
-import type { ICommand, CommandInput, CommandResult } from "./interfaces";
+import type { ICommand, CommandInput, CommandResult } from "./interfaces.ts";
 
 export abstract class BaseCommand implements ICommand {
   abstract name: string;
