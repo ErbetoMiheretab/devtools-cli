@@ -14,7 +14,9 @@ export class InputReader implements IInputReader {
         try {
           return await fs.readFile(safePath, "utf-8");
         } catch (error) {
-          throw new Error(`Failed to read file at ${safePath}: ${(error as Error).message}`);
+          throw new Error(
+            `Failed to read file at ${safePath}: ${(error as Error).message}`,
+          );
         }
       }
       case "stdin":
@@ -23,13 +25,15 @@ export class InputReader implements IInputReader {
             resolve("");
             return;
           }
-          let data = "";
-          process.stdin.setEncoding("utf-8");
-          process.stdin.on("data", (chunk: string) => {
-            data += chunk;
+          const chunks: Buffer[] = [];
+          // Removed setEncoding so chunks remain as raw binary Buffers
+          process.stdin.on("data", (chunk: Buffer) => {
+            chunks.push(chunk);
           });
           process.stdin.on("end", () => {
-            resolve(data.trim());
+            // Concatenate all binary chunks into a single buffer before decoding
+            const fullBuffer = Buffer.concat(chunks);
+            resolve(fullBuffer.toString("utf-8").trim());
           });
           process.stdin.on("error", (err: Error) => {
             reject(new Error(`Failed to read from stdin: ${err.message}`));
