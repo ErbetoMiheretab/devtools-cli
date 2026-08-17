@@ -15,7 +15,7 @@ export interface CommandResult {
   format: "text" | "json" | "binary";
 }
 
-export interface IOutoutFormatter {
+export interface IOutputFormatter {
   format(result: CommandResult): string;
 }
 
