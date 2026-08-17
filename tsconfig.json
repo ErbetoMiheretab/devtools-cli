@@ -8,6 +8,18 @@
         "strict": true,
         "declaration": true,
         "esModuleInterop": true,
-        "types": ["node"]
+        "skipLibCheck": true,
+        "ignoreDeprecations": "6.0",
+        "types": [
+            "node"
+        ]
     },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "tests"
+    ]
 }

@@ -1,12 +1,24 @@
 {
   "name": "devtools-cli",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "A collection of developer utilities",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "devtools": "dist/index.js"
   },
-  "keywords": [],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "dev": "tsx src/index.ts",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "keywords": [
+    "cli",
+    "devtools",
+    "utilities",
+    "developer-tools"
+  ],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.34.3",
