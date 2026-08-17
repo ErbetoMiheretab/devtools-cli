@@ -1,6 +1,6 @@
 import type { IOutputFormatter, CommandResult } from "../core/interfaces";
 
-class jsonFormatter implements IOutputFormatter {
+class JsonFormatter implements IOutputFormatter {
   format(result: CommandResult): string {
     return JSON.stringify({ ok: true, data: result.data }, null, 2);
   }
@@ -15,6 +15,24 @@ class TextFormatter implements IOutputFormatter {
   }
 }
 
-export function getFormatter(useJson: boolean): IOutputFormatter {
-  return useJson ? new jsonFormatter() : new TextFormatter();
+class BinaryFormatter implements IOutputFormatter {
+  format(result: CommandResult): string {
+    if (result.data instanceof Uint8Array) {
+      return Buffer.from(result.data).toString("base64");
+    }
+    throw new Error("BinaryFormatter expects Uint8Array data");
+  }
+}
+
+export function getFormatter(
+  format: CommandResult["format"],
+): IOutputFormatter {
+  switch (format) {
+    case "json":
+      return new JsonFormatter();
+    case "binary":
+      return new BinaryFormatter();
+    default:
+      return new TextFormatter();
+  }
 }
