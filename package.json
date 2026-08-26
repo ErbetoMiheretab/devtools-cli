@@ -32,6 +32,7 @@
     "js-yaml": "^4.2.0",
     "node-forge": "^1.4.0",
     "ora": "^9.4.0",
+    "picocolors": "^1.1.1",
     "sharp": "^0.35.1",
     "sql-formatter": "^15.8.1"
   },
