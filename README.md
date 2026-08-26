@@ -29,7 +29,7 @@ devtools <command> [options]
 
 ## Available Commands
 
-### ✅ UUID Generator
+###  UUID Generator
 Generate UUID v4 values.
 
 ```bash
@@ -38,6 +38,35 @@ devtools uuid -c 5         # Generate 5 UUIDs
 devtools uuid --json       # Output as JSON
 ```
 
+###  Base64 Encoder/Decoder
+Encode strings to base64 or decode base64 strings.
+
+```bash
+devtools base64 "hello world"           # Encode to base64
+devtools base64 "aGVsbG8gd29ybGQ=" -d  # Decode from base64
+echo "data" | devtools base64           # From stdin
+devtools base64 "test" --json           # JSON output
+```
+
+###  Hash Generator
+Generate hash digests using various algorithms (MD5, SHA-1, SHA-256, SHA-512).
+
+```bash
+devtools hash "text"                    # SHA-256 (default)
+devtools hash "text" --algorithm md5    # MD5 hash
+devtools hash "text" --algorithm sha1   # SHA-1 hash
+devtools hash "text" --algorithm sha512 # SHA-512 hash
+echo "data" | devtools hash             # From stdin
+```
+
+###  URL Encoder/Decoder
+Encode strings to URL-safe format or decode percent-encoded URLs.
+
+```bash
+devtools url "hello world"         # Encode to URL-safe format
+devtools url "hello%20world" -d    # Decode from URL-safe format
+echo "data" | devtools url         # From stdin
+```
 
 
 ## Architecture

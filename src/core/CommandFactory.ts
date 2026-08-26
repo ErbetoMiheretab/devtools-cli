@@ -1,10 +1,71 @@
-import type { ICommand } from "./interfaces.ts";
-import { UuidCommand } from "../commands/uuid.ts";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import type { ICommand } from "./interfaces.js";
+import { UuidCommand } from "../commands/uuid.js";
+import { Base64Command } from "../commands/base64.js";
+import { HashCommand } from "../commands/hash.js";
+import { UrlCommand } from "../commands/url.js";
 
 type CommandConstructor = new () => ICommand;
 
 const COMMAND_MAP: Record<string, CommandConstructor> = {
   uuid: UuidCommand,
+  base64: Base64Command,
+  hash: HashCommand,
+  url: UrlCommand,
 };
 
 export class CommandFactory {
