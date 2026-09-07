@@ -58,6 +58,9 @@ import { UuidCommand } from "../commands/uuid.js";
 import { Base64Command } from "../commands/base64.js";
 import { HashCommand } from "../commands/hash.js";
 import { UrlCommand } from "../commands/url.js";
+import { CaseCommand } from "../commands/case.js";
+import { TimestampCommand } from "../commands/timestamp.js";
+import { BaseConverterCommand } from "../commands/base.js";
 
 type CommandConstructor = new () => ICommand;
 
@@ -66,6 +69,9 @@ const COMMAND_MAP: Record<string, CommandConstructor> = {
   base64: Base64Command,
   hash: HashCommand,
   url: UrlCommand,
+  case: CaseCommand,
+  timestamp: TimestampCommand,
+  base: BaseConverterCommand,
 };
 
 export class CommandFactory {

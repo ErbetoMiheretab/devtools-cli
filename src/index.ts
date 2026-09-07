@@ -19,10 +19,13 @@ export { CLIError } from "./utils/error.ts";
 // ─── Command metadata for the help table ───────────────────────────────────
 
 const COMMAND_HELP = [
-  { name: "uuid",   description: "Generate one or more UUID v4 values",          usage: "devtools uuid -c 5" },
-  { name: "base64", description: "Encode or decode base64 strings",               usage: "devtools base64 'hello' | devtools base64 -d 'aGVsbG8='"},
-  { name: "hash",   description: "Hash text (MD5, SHA-1, SHA-256, SHA-512)",      usage: "devtools hash -a sha512 'hello'" },
-  { name: "url",    description: "Encode or decode URL strings (percent-encode)", usage: "devtools url 'hello world'" },
+  { name: "uuid",      description: "Generate one or more UUID v4 values",               usage: "devtools uuid -c 5" },
+  { name: "base64",    description: "Encode or decode base64 strings",                    usage: "devtools base64 'hello' | devtools base64 -d 'aGVsbG8='"},
+  { name: "hash",      description: "Hash text (MD5, SHA-1, SHA-256, SHA-512)",           usage: "devtools hash -a sha512 'hello'" },
+  { name: "url",       description: "Encode or decode URL strings (percent-encode)",      usage: "devtools url 'hello world'" },
+  { name: "case",      description: "Convert text case (upper, lower, title, snake, etc.)", usage: "devtools case -f snake 'Hello World'" },
+  { name: "timestamp", description: "Convert Unix timestamps ↔ human-readable dates",     usage: "devtools timestamp --to-human 1609459200" },
+  { name: "base",      description: "Convert numbers between bases (binary, octal, hex)", usage: "devtools base 255 --to hex" },
 ];
 
 // ─── Styled output helper ──────────────────────────────────────────────────
@@ -67,6 +70,9 @@ function displayResult(
   const labels: Record<string, string> = {
     base64: "base64",
     url: "encoded URL",
+    case: "converted text",
+    timestamp: "timestamp",
+    base: "converted number",
   };
   printResult(labels[commandName] ?? "Result", String(data));
 }
@@ -175,6 +181,36 @@ async function main() {
     .option("-j, --json", "Format output as JSON", false)
     .addHelpText("after", `\n  Examples:\n    $ devtools url 'hello world'\n    $ devtools url -d 'hello%20world'\n`)
     .action((text, options) => createCommandHandler("url")(text || [], options));
+
+  // ── case ──────────────────────────────────────────────────────────────────
+  program
+    .command("case [text...]")
+    .description("Convert text between different cases")
+    .option("-f, --format <type>", "Case format (upper, lower, title, snake, kebab, camel, pascal, constant)", "upper")
+    .option("-j, --json", "Format output as JSON", false)
+    .addHelpText("after", `\n  Examples:\n    $ devtools case 'hello world'\n    $ devtools case -f snake 'Hello World'\n    $ devtools case -f camel 'hello-world-example'\n    $ echo 'myVariableName' | devtools case -f snake\n`)
+    .action((text, options) => createCommandHandler("case")(text || [], options));
+
+  // ── timestamp ─────────────────────────────────────────────────────────────
+  program
+    .command("timestamp [value...]")
+    .description("Convert between Unix timestamps and human-readable dates")
+    .option("-h, --to-human", "Convert timestamp to human-readable date", false)
+    .option("-u, --unit <unit>", "Time unit (s/seconds or ms/milliseconds)", "s")
+    .option("-j, --json", "Format output as JSON", false)
+    .addHelpText("after", `\n  Examples:\n    $ devtools timestamp\n    $ devtools timestamp --to-human 1609459200\n    $ devtools timestamp '2024-01-01'\n    $ devtools timestamp --to-human 1609459200000 -u ms\n`)
+    .action((value, options) => createCommandHandler("timestamp")(value || [], options));
+
+  // ── base ──────────────────────────────────────────────────────────────────
+  program
+    .command("base [number...]")
+    .description("Convert numbers between different bases")
+    .option("-f, --from <base>", "Source base (binary/2, octal/8, decimal/10, hex/16)", "10")
+    .option("-t, --to <base>", "Target base (binary/2, octal/8, decimal/10, hex/16)", "10")
+    .option("-a, --all", "Show conversion to all common bases", false)
+    .option("-j, --json", "Format output as JSON", false)
+    .addHelpText("after", `\n  Examples:\n    $ devtools base 255\n    $ devtools base 255 --to hex\n    $ devtools base FF --from hex --to binary\n    $ devtools base 1010 --from binary --all\n`)
+    .action((number, options) => createCommandHandler("base")(number || [], options));
 
   // ── Parse ─────────────────────────────────────────────────────────────────
   program.parse(process.argv);
